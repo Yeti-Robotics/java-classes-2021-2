@@ -18,23 +18,32 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public IntakeSubsystem() {
     intakeVictor = new VictorSPX(8);
+    intakeVictor.setInverted(true);
     intakePiston = new DoubleSolenoid(0, 7);
   }
+
   public void intakeIn() {
-    intakeVictor.set(ControlMode.PercentOutput, 1);
+    intakeVictor.set(ControlMode.PercentOutput, 0.5);
   }
+
   public void intakeOut() {
-    intakeVictor.set(ControlMode.PercentOutput, -1);
+    intakeVictor.set(ControlMode.PercentOutput, -0.5);
   }
+
   public void extend() {
-    intakePiston.set(Value.kForward);
-  }
-  public void retract() {
     intakePiston.set(Value.kReverse);
+  }
+
+  public void retract() {
+    intakePiston.set(Value.kForward);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public void stop() {
+    intakeVictor.set(ControlMode.PercentOutput, 0);
   }
 }
